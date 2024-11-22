@@ -93,7 +93,7 @@ def fill_chart_query_options(
 
 async def dashboard_list(request: Request, datasette: "Datasette") -> Response:
     await check_permission_instance(request, datasette)
-    config = datasette.plugin_config("datasette-dashboards") or {}
+    config = datasette.metadata().get("plugins").get("datasette-dashboards") or {}
     return Response.html(
         await datasette.render_template(
             "dashboard_list.html",
@@ -108,7 +108,7 @@ async def _dashboard_view(
 ) -> Response:
     await check_permission_instance(request, datasette)
 
-    config = datasette.plugin_config("datasette-dashboards") or {}
+    config = datasette.metadata().get("plugins").get("datasette-dashboards") or {}
     slug = urllib.parse.unquote(request.url_vars["slug"])
     try:
         dashboard = config[slug]
@@ -178,7 +178,7 @@ async def _dashboard_chart(
 ) -> Response:
     await check_permission_instance(request, datasette)
 
-    config = datasette.plugin_config("datasette-dashboards") or {}
+    config = datasette.metadata().get("plugins").get("datasette-dashboards") or {}
     slug = urllib.parse.unquote(request.url_vars["slug"])
     chart_slug = urllib.parse.unquote(request.url_vars["chart_slug"])
 
